@@ -1,0 +1,1 @@
+I ran the model on Jupyter notebook by just running the 2 blocks in run.ipynb.
