@@ -8,7 +8,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using '{device}' device.")
 
 # Mini-Batch SGD hyperparameters
-num_epochs = 5
+num_epochs = 10
 lr = 0.001
 
 def mse_loss(model, X, Y):
@@ -26,8 +26,8 @@ def mae_loss(model, X, Y):
     return train_output, train_loss
 
 def run_model(model, training_loader, validation_loader, 
-              optimizer, learning_rate, get_output_and_loss):    
-    return gradient_descent(model, training_loader, validation_loader, optimizer, learning_rate, get_output_and_loss)
+              optimizer, learning_rate, get_output_and_loss, nn):    
+    return gradient_descent(model, training_loader, validation_loader, optimizer, learning_rate, get_output_and_loss, nn)
 
 def visualize(model, model_name, test_loader):
     grayscale_batch, color_batch = next(iter(test_loader))
@@ -36,7 +36,7 @@ def visualize(model, model_name, test_loader):
 
     model.eval()
     with torch.no_grad():
-        outputs = model(grayscale_small)
+        outputs = model(grayscale_small.cuda())
 
     for i in range(outputs.shape[0]):
         input_img = grayscale_small[i].detach().cpu().permute(1, 2, 0).clamp(0,1)
@@ -58,7 +58,7 @@ def visualize(model, model_name, test_loader):
         plt.imshow(true_img)
         plt.savefig(model_name + f"Target{i}")
 
-def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate, get_output_and_loss):
+def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate, get_output_and_loss, nn):
 
     # Do model creation here so that the model is recreated each time the cell is run
     model = model.to(device)
@@ -94,7 +94,7 @@ def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate
             train_X, train_Y = next(train_dataiterator)
             train_X, train_Y = train_X.to(device), train_Y.to(device)
 
-            train_output, train_loss = get_output_and_loss(model, train_X, train_Y)
+            train_output, train_loss = get_output_and_loss(model, train_X, train_Y, nn)
 
             num_in_batch = len(train_X)
             tloss = train_loss.item() * num_in_batch / train_N
@@ -128,7 +128,7 @@ def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate
 
                 valid_X, valid_Y = valid_X.to(device), valid_Y.to(device)
 
-                valid_output, valid_loss = get_output_and_loss(model, valid_X, valid_Y)
+                valid_output, valid_loss = get_output_and_loss(model, valid_X, valid_Y, nn)
 
                 num_in_batch = len(valid_X)
                 vloss = valid_loss.item() * num_in_batch / valid_N

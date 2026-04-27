@@ -78,7 +78,9 @@ if __name__ == '__main__':
     training_loader, validation_loader, test_loader = build_dataloaders(batch_size=32)
     model = UNet()
     loss_func = perceptual_loss
-    run_model(model, training_loader, validation_loader, optimizer=Adam, learning_rate=lr, get_output_and_loss=loss_func)
+    # alexnet = models.alexnet(weights='DEFAULT').cuda()
+    vgg19 = torch.hub.load("chenyaofo/pytorch-cifar-models", "cifar10_vgg19_bn", pretrained=True).cuda()
+    run_model(model, training_loader, validation_loader, optimizer=Adam, learning_rate=lr, get_output_and_loss=loss_func, nn=vgg19)
     visualize(model, "UNet", test_loader)
     
 
