@@ -44,9 +44,9 @@ def visualize(model, model_name, test_loader):
         true_img = color_small[i].detach().cpu().permute(1, 2, 0).clamp(0,1)
     
         # input
-        plt.title(f"Input{i}")
-        plt.imshow(input_img) 
-        plt.savefig(model_name + f"Input{i}")
+        # plt.title(f"Input{i}")
+        # plt.imshow(input_img) 
+        # plt.savefig(model_name + f"Input{i}")
 
         # prediction
         plt.title(f"Prediction{i}")
@@ -54,9 +54,9 @@ def visualize(model, model_name, test_loader):
         plt.savefig(model_name + f"Prediction{i}")
 
         # target
-        plt.title(f"Target{i}")
-        plt.imshow(true_img)
-        plt.savefig(model_name + f"Target{i}")
+        # plt.title(f"Target{i}")
+        # plt.imshow(true_img)
+        # plt.savefig(model_name + f"Target{i}")
 
 def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate, get_output_and_loss, nn):
 
