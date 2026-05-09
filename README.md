@@ -28,10 +28,14 @@ We implemented the **U-Net architecture** and applied it to **image colorization
 ### Part 4: 
 ### hyperparameter.py
 we implemented experiments on:
-1. **perceptual layers**: select specific perceptual layers of VGG-19
+1. **perceptual layers**: select specific perceptual layers of CIFAR-10 VGG-19
+2. **mse weights**: select different mse weigths for loss function
+
+### flower_hyperparameter.py
+we implemented experiments on:
+1. **perceptual layers**: select specific perceptual layers of ImageNet VGG-19
 2. **mse weights**: select different mse weigths for loss function
 3. **learning rate**: select different learning rates for the experiment
-
 
 ## 3. environment setup
 1. install dependencies: pip install torch torchvision matplotlib fastprogress
