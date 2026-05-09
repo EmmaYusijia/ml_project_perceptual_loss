@@ -26,6 +26,11 @@ We implemented the **U-Net architecture** and applied it to **image colorization
 2. the perceptual_loss_simp method doesn't use the outputs from intermediate layers as in the paper, and instead it uses the final output from the neural network as a simpler version of the paper's original implementation
 
 ### Part 4: 
+### hyperparameter.py
+we implemented experiments on:
+1. **perceptual layers**: select specific perceptual layers of VGG-19
+2. **mse weights**: select different mse weigths for loss function
+3. **learning rate**: select different learning rates for the experiment
 
 
 ## 3. environment setup
@@ -43,5 +48,4 @@ We implemented the **U-Net architecture** and applied it to **image colorization
    **expected output:** a line chart: figures/qualitative results/loss_comp.png
 
 ### Part 4: 
-
-
+We run experiments on two datasets: CIFAR-10, Oxford 102 flower.
