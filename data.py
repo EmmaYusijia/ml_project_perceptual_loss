@@ -39,6 +39,24 @@ def build_dataloaders(batch_size=64,root="./data",training_ratio=0.9,seed=42):
     testing_loader = DataLoader(ColorizationDataset(test_data), batch_size=batch_size, shuffle=False)
     return training_loader, validation_loader, testing_loader
 
+# purpose: load Oxford 102 flower dataset, resize images, and return dataloaders for training, validation, and testing
+# output:
+#   training_loader: DataLoader for training set
+#   validation_loader: DataLoader for validation set
+#   testing_loader: DataLoader for test set
+# side effect: downloads Flowers-102 dataset if not exist
+def build_flowers_dataloaders(batch_size=16, root="./data", image_size=64):
+    transform = transforms.Compose([transforms.Resize((image_size, image_size)), transforms.ToTensor()])
+    train_data = torchvision.datasets.Flowers102(root=root, split="train", download=True,transform=transform)
+    validation_data = torchvision.datasets.Flowers102(root=root, split="val", download=True, transform=transform)
+    test_data = torchvision.datasets.Flowers102(root=root, split="test", download=True, transform=transform)
+    train_data = Subset(train_data, list(range(min(1000, len(train_data)))))
+    validation_data = Subset(validation_data, list(range(min(500, len(validation_data)))))
+    test_data = Subset(test_data, list(range(min(500, len(test_data)))))
+    training_loader = DataLoader(ColorizationDataset(train_data), batch_size=batch_size, shuffle=True)
+    validation_loader = DataLoader(ColorizationDataset(validation_data), batch_size=batch_size, shuffle=False)
+    testing_loader = DataLoader(ColorizationDataset(test_data), batch_size=batch_size, shuffle=False)
+    return training_loader, validation_loader, testing_loader
 
 # purpose: test the data pipeline by loading and printing batch shapes
 # output: None
