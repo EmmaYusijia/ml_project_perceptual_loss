@@ -47,9 +47,9 @@ def build_dataloaders(batch_size=64,root="./data",training_ratio=0.9,seed=42):
 # side effect: downloads Flowers-102 dataset if not exist
 def build_flowers_dataloaders(batch_size=16, root="./data", image_size=64):
     transform = transforms.Compose([transforms.Resize((image_size, image_size)), transforms.ToTensor()])
-    train_data = torchvision.datasets.Flowers102(root=root, split="train", download=True,transform=transform)
-    validation_data = torchvision.datasets.Flowers102(root=root, split="val", download=True, transform=transform)
-    test_data = torchvision.datasets.Flowers102(root=root, split="test", download=True, transform=transform)
+    train_data = torchvision.datasets.Flowers102(root=root, split="train", download=False, transform=transform)
+    validation_data = torchvision.datasets.Flowers102(root=root, split="val", download=False, transform=transform)
+    test_data = torchvision.datasets.Flowers102(root=root, split="test", download=False, transform=transform)
     train_data = Subset(train_data, list(range(min(1000, len(train_data)))))
     validation_data = Subset(validation_data, list(range(min(500, len(validation_data)))))
     test_data = Subset(test_data, list(range(min(500, len(test_data)))))
