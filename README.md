@@ -57,29 +57,29 @@ We run experiments on two datasets and three models. One is CIFAR-10 with CIFAR-
 2. **expected output:**
    1. training logs for each hyperparameter setting
    2. Part 4 figures/tables:
-      perceptual_hyperparameter_table.png: summary table of test MSE and perceputal loss of different hyperparameters
-      mse_comparison_qualitative.png: comparison of the mse weight of the loss
-      perceptual_layer_qualitative.png: comparison of using different perceptual layers
+      1. perceptual_hyperparameter_table.png: summary table of test MSE and perceputal loss of different hyperparameters
+      2. mse_comparison_qualitative.png: comparison of the mse weight of the loss
+      3. perceptual_layer_qualitative.png: comparison of using different perceptual layers
 
 The other is Oxford 102 flower with ImageNet VGG19.
 1. **command:** python3 flower_hyperparameter.py
 2. **expected output:**
    1. training logs for each hyperparameter setting
    2. Part 4 figures/tables:
-      flower_perceptual_hyperparameter_table.png: summary table of test MSE and perceputal loss of different hyperparameters
-      flower_mse_comparison_qualitative.png: comparison of the mse weight of the losses
-      flower_perceptual_layer_qualitative.png: comparison of using different perceptual layers
-      flower_learning_rate_qualitative.png: comparison of using different learning rates
-      flower_epoch_qualitative.png: comparison of multiple epochs of one experiment
+      1. flower_perceptual_hyperparameter_table.png: summary table of test MSE and perceputal loss of different hyperparameters
+      2. flower_mse_comparison_qualitative.png: comparison of the mse weight of the losses
+      3. flower_perceptual_layer_qualitative.png: comparison of using different perceptual layers
+      4. flower_learning_rate_qualitative.png: comparison of using different learning rates
+      5. flower_epoch_qualitative.png: comparison of multiple epochs of one experiment
 
 The other is Oxford 102 flower with AlexNet VGG19.
 1. **command:** python3 alex_flower_hyperparameter.py
 2. **expected output:**
    1. training logs for each hyperparameter setting
    2. Part 4 figures/tables:
-      AlexNet_flower_perceptual_hyperparameter_table.png: summary table of test MSE and perceputal loss of different hyperparameters
-      AlexNet_flower_mse_comparison_qualitative.png: comparison of the mse weight of the losses
-      AlexNet_flower_perceptual_layer_qualitative.png: comparison of using different perceptual layers
-      AlexNet_flower_learning_rate_qualitative.png: comparison of using different learning rates
-      AlexNet_flower_epoch_qualitative.png: comparison of multiple epochs of one experiment
+      1. AlexNet_flower_perceptual_hyperparameter_table.png: summary table of test MSE and perceputal loss of different hyperparameters
+      2. AlexNet_flower_mse_comparison_qualitative.png: comparison of the mse weight of the losses
+      3. AlexNet_flower_perceptual_layer_qualitative.png: comparison of using different perceptual layers
+      4. AlexNet_flower_learning_rate_qualitative.png: comparison of using different learning rates
+      5. AlexNet_flower_epoch_qualitative.png: comparison of multiple epochs of one experiment
    
