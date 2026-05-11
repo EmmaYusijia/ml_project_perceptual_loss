@@ -11,7 +11,7 @@ print(f"Using '{device}' device.")
 num_epochs = 10
 lr = 0.001
 
-def mse_loss(model, X, Y):
+def mse_loss(model, X, Y, network):
     # Compute the output
     train_output = model(X)
     criterion = nn.MSELoss()
@@ -25,40 +25,44 @@ def mae_loss(model, X, Y):
     train_loss = criterion(train_output, Y)
     return train_output, train_loss
 
-def run_model(model, training_loader, validation_loader, 
-              optimizer, learning_rate, get_output_and_loss, nn):    
-    return gradient_descent(model, training_loader, validation_loader, optimizer, learning_rate, get_output_and_loss, nn)
+def run_model(model, training_loader, validation_loader, test_loader,
+              optimizer, learning_rate, get_output_and_loss, network):    
+    return gradient_descent(model, training_loader, validation_loader, test_loader, optimizer, learning_rate, get_output_and_loss, network)
 
-def visualize(model, model_name, test_loader):
+def visualize(model, test_loader, epoch):
+    plt.close()
     grayscale_batch, color_batch = next(iter(test_loader))
-    grayscale_small = grayscale_batch[0:3, :, :, :]
-    color_small = color_batch[0:3, :, :, :]
+
+    grayscale_small = grayscale_batch[0:32, :, :, :]
+    color_small = color_batch[0:32, :, :, :]
+
+    img_lst = [0, 25]
 
     model.eval()
     with torch.no_grad():
         outputs = model(grayscale_small.cuda())
 
-    for i in range(outputs.shape[0]):
+    for i in img_lst:
         input_img = grayscale_small[i].detach().cpu().permute(1, 2, 0).clamp(0,1)
         pred_img = outputs[i].detach().cpu().permute(1, 2, 0).clamp(0,1)
         true_img = color_small[i].detach().cpu().permute(1, 2, 0).clamp(0,1)
     
         # input
-        # plt.title(f"Input{i}")
+        # plt.title(f"Flowers Input{i+1}")
         # plt.imshow(input_img) 
-        # plt.savefig(model_name + f"Input{i}")
+        # plt.savefig(f"Flowers Input{i+1}.png")
 
         # prediction
-        plt.title(f"Prediction{i}")
+        plt.title(f"Flowers int. Prediction{i+1} Epoch{epoch+1}")
         plt.imshow(pred_img)
-        plt.savefig(model_name + f"Prediction{i}")
+        plt.savefig(f"Flowers int.Prediction{i+1} Epoch{epoch+1}.png")
 
         # target
-        # plt.title(f"Target{i}")
+        # plt.title(f"Flowers Target{i+1}")
         # plt.imshow(true_img)
-        # plt.savefig(model_name + f"Target{i}")
+        # plt.savefig(f"Flowers Target{i+1}.png")
 
-def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate, get_output_and_loss, nn):
+def gradient_descent(model, train_loader, valid_loader, test_loader, optimizer, learning_rate, get_output_and_loss, network):
 
     # Do model creation here so that the model is recreated each time the cell is run
     model = model.to(device)
@@ -94,7 +98,7 @@ def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate
             train_X, train_Y = next(train_dataiterator)
             train_X, train_Y = train_X.to(device), train_Y.to(device)
 
-            train_output, train_loss = get_output_and_loss(model, train_X, train_Y, nn)
+            train_output, train_loss = get_output_and_loss(model, train_X, train_Y, network)
 
             num_in_batch = len(train_X)
             tloss = train_loss.item() * num_in_batch / train_N
@@ -109,6 +113,15 @@ def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate
             t += 1
             with torch.no_grad():
                 opt.step()
+
+        
+        #    
+        # Visualize
+        #
+
+        # if (epoch == 2 or epoch == 5 or epoch == 9):
+        visualize(model, test_loader, epoch)
+
 
         #
         # Validation
@@ -128,8 +141,8 @@ def gradient_descent(model, train_loader, valid_loader, optimizer, learning_rate
 
                 valid_X, valid_Y = valid_X.to(device), valid_Y.to(device)
 
-                valid_output, valid_loss = get_output_and_loss(model, valid_X, valid_Y, nn)
-
+                valid_output, valid_loss = get_output_and_loss(model, valid_X, valid_Y, network)
+                                
                 num_in_batch = len(valid_X)
                 vloss = valid_loss.item() * num_in_batch / valid_N
                 valid_loss_mean += vloss
